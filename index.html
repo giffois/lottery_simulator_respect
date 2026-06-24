@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>宝くじ時間体験シミュレータ</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="intro" aria-labelledby="app-title">
+        <p class="kicker">
+          <a href="https://web.archive.org/web/20250917234624/http://kaz.in.coocan.jp/takarakuji/">宝くじシミュレーター</a>リスペクト
+        </p>
+        <h1 id="app-title">宝くじの当せん確率を、時間で見る。</h1>
+      </section>
+
+      <details class="concept-note">
+        <summary>
+          <span class="lead-probability">50万分の1と、2000万分の1。</span>
+        </summary>
+        <div>
+          <p>これは、年末ジャンボ宝くじにおける、4等100万円と、1等7億円の当せん確率です。</p>
+          <p>100万円と7億円の違いは、私たちにもはっきり分かります。しかし、50万分の1と2000万分の1の違いはどうでしょうか。</p>
+          <p>数字の上では40倍違います。けれど、私たちの感覚では、どちらも「とても小さいが、ゼロではない確率」に丸められてしまいます。</p>
+          <p>人間は、極小確率を正確に認知できるようには進化していません。</p>
+          <p>一方で、私たちは時間の違いには敏感です。1秒と1分の違い、1分と1時間の違いなら、身体で分かります。</p>
+          <p>かつて存在した<a href="https://web.archive.org/web/20250917234624/http://kaz.in.coocan.jp/takarakuji/">宝くじシミュレーター</a>の素晴らしさは、ここにありました。縁遠い微小確率を、購入枚数や期待値ではなく、待ち時間として体験できる形に変換したのです。</p>
+          <p>本シミュレーターは、その認知設計へのリスペクトとして作成するものです。</p>
+          <p>宝くじは、夢を見せてくれます。</p>
+          <p>このシミュレーターは、その夢までの距離を、時間で教えてくれます。</p>
+        </div>
+      </details>
+
+      <section class="toolbar" aria-label="シミュレーション操作">
+        <div class="button-row">
+          <button id="startButton" class="primary" type="button">開始</button>
+          <button id="pauseButton" type="button" disabled>一時停止</button>
+          <button id="resetButton" type="button">リセット</button>
+        </div>
+
+        <label class="speed-control" for="speedSelect">
+          <span>購入速度モード</span>
+          <select id="speedSelect">
+            <option value="1">1倍速</option>
+            <option value="10" selected>10倍速</option>
+            <option value="100">100倍速</option>
+            <option value="1000">1000倍速</option>
+            <option value="5000">限界まで</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="stats-grid" aria-label="主要カウンター">
+        <article class="stat major">
+          <span class="label">購入枚数</span>
+          <strong id="ticketsCount">0枚</strong>
+        </article>
+        <article class="stat major">
+          <span class="label">投入額</span>
+          <strong id="spentAmount">0円</strong>
+        </article>
+        <article class="stat">
+          <span class="label">回収額</span>
+          <strong id="returnedAmount">0円</strong>
+        </article>
+        <article class="stat">
+          <span class="label">損益</span>
+          <strong id="profitLoss">0円</strong>
+        </article>
+        <article class="stat">
+          <span class="label">回収率</span>
+          <strong id="returnRate">0.0%</strong>
+        </article>
+        <article class="stat">
+          <span class="label">実時間</span>
+          <strong id="elapsedTime">00:00:00</strong>
+        </article>
+        <article class="stat compact-stat">
+          <span class="label">購入中の券</span>
+          <strong id="currentTicket">未購入</strong>
+        </article>
+        <article class="stat compact-stat">
+          <span class="label">くじセット進捗</span>
+          <strong id="ticketSetProgress">0枚 / 20,000,000枚</strong>
+        </article>
+      </section>
+
+      <section class="reality-panel" aria-label="現実時間換算">
+        <div>
+          <span class="label">現実換算</span>
+          <p id="realWorldTime">毎週10枚買った場合、約0年分です</p>
+        </div>
+        <div class="first-prize">
+          <span class="label">一等</span>
+          <p id="firstPrizeStatus">未当選</p>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>当選履歴</h2>
+            <span id="historyCount">0件</span>
+          </div>
+          <div id="winSummary" class="win-summary" aria-label="当選履歴サマリー"></div>
+          <ol id="winHistory" class="history-list" aria-live="polite">
+            <li class="empty">まだ当選履歴はありません。</li>
+          </ol>
+        </article>
+
+        <article class="panel">
+          <h2>賞金テーブル</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>等級</th>
+                <th>確率</th>
+                <th>賞金</th>
+              </tr>
+            </thead>
+            <tbody id="prizeTable"></tbody>
+          </table>
+          <p class="source-note">
+            出典: 第1082回全国自治宝くじ
+            (年末ジャンボ宝くじ、23ユニット) の当せん金・本数を参考。
+            表示される組番はシミュレーション上のもので、実際の当せん組番・番号とは関係ありません。
+          </p>
+        </article>
+      </section>
+
+      <p id="quietMessage" class="quiet-message" aria-live="polite">
+        まだ一等は出ていません。この退屈さが、極小確率です。
+      </p>
+
+      <footer>
+        このシミュレータは教育・娯楽目的です。実際の宝くじの当選結果を予測するものではありません。
+        表示される組番・番号は実際の当せん組番・番号とは関係ありません。
+      </footer>
+    </main>
+
+    <script src="main.js"></script>
+  </body>
+</html>

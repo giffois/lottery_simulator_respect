@@ -66,3 +66,7 @@
 
 ビルドや外部サーバーは不要です。
 最新のChrome、Safari、Firefoxなどのブラウザで `index.html` を開いてください。
+
+## ライセンス
+
+MIT License
